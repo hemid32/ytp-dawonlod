@@ -1,7 +1,6 @@
 import urllib
-from urllib2 import urlopen
 import sys
-from PyQt4 import QtCore, QtGui, uic
+from PyQt4 import QtCore, QtGui, uic ,Qt
 
 qtCreatorFile = "maino.ui"  # Enter file here.
 
@@ -15,6 +14,10 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
         self.handel_ui()
         self.button_sav()
+        self.reporthook(0,0,0)
+
+
+
 
 
     def handel_ui(self):
@@ -22,45 +25,40 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setWindowTitle('hemidi benameur')
     def button_sav(self):
         self.pushButton.clicked.connect(self.dowonlod)
-        #https://www.youtube.com/watch?v=MQoQcPHAJN0
-        #self.pushButton.connect(self.pushButton, self.SIGNAL('clicked()'), self.dowonlod)
-        #self.puchButton.clicked.connect(partial(self.dowonlod))
-        #self.pushButton.clicked.connect(partial(self.dowonlod, pushButton.text()))
-        #self.pushButton.clicked.connect(lambda:self.dowonlod)
-        #QtCore.pushButton.connect(self.pushButton, QtCore.SIGNAL('clicked()'), self.dowonlod)
-
+        self.pushButton_2.clicked.connect(self.lint_save)
     def lint_save(self):
-        pass
-    def loding(self, blocknum,blocksize,totalsize):
-        pass
+        save = Qt.QFileDialog.getSaveFileName(self,caption='sav as',directory=".",filter="All files(*.*)")
+
+        self.lineEdit_2.setText(str(save))
+    def reporthook( self , blocknum, blocksize, totalsize ):
+
+
+        red = blocksize * blocknum
+        if totalsize > 0 :
+
+            res = red * 100 / totalsize
+            self.progressBar.setValue(res)
+            Qt.QApplication.processEvents()
 
     def dowonlod(self):
         url_text = self.lineEdit.text()
         open_save = self.lineEdit_2.text()
-        #f = [open_save]
-        #ydl_opts = {
-        #   'verbose': True,  # like this
-        #  'outtmpl':'E:\programation\hemidi.mp4',  # how can i find
-        #   'progress_hooks': [100],  # how can i find
-        #}
-        #ydl_opts = {'outtmpl': str(f[0])}
 
-        #ydl_opts = {'file_name.mp4'}
-        #ydl_opts = {'outtmpl': 'file_name.mp4'}
-        #with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        #    ydl.download([str(url_text)])
+
         try:
-            urllib.urlretrieve(str(url_text),str(open_save),self.loding)
+            urllib.urlretrieve(str(url_text),str(open_save), self.reporthook)
         except Exception :
-            print 'ERORR'
-            return
 
+            Qt.QMessageBox.critical(self,'Erurr','dawonlod erurr')
+
+            return
+        #E:\programation\progect\pyqt\dawnlodyoutub\hmd.zip
+        #https://codeload.github.com/ColinDuquesnoy/QDarkStyleSheet/zip/master
 
         self.progressBar.setValue(0)
         self.lineEdit.setText('')
         self.lineEdit_2.setText('')
-        #print'ok'
-        #QMessageBox.information(self,'dnvkjfvn','dvufdu')
+        Qt.QMessageBox.information(self,'finishd','finishd dawnlod')
         print 'yas'
 
 
