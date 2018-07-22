@@ -1,11 +1,7 @@
-
-from __future__ import unicode_literals
+import urllib
+from urllib2 import urlopen
 import sys
 from PyQt4 import QtCore, QtGui, uic
-from urllib2 import Request
-import youtube_dl
-import urllib
-import shutil
 
 qtCreatorFile = "maino.ui"  # Enter file here.
 
@@ -26,6 +22,7 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
         self.setWindowTitle('hemidi benameur')
     def button_sav(self):
         self.pushButton.clicked.connect(self.dowonlod)
+        #https://www.youtube.com/watch?v=MQoQcPHAJN0
         #self.pushButton.connect(self.pushButton, self.SIGNAL('clicked()'), self.dowonlod)
         #self.puchButton.clicked.connect(partial(self.dowonlod))
         #self.pushButton.clicked.connect(partial(self.dowonlod, pushButton.text()))
@@ -34,32 +31,37 @@ class MyApp(QtGui.QMainWindow, Ui_MainWindow):
 
     def lint_save(self):
         pass
-    def loding(self, blocknum , blocksize,totalsize):
+    def loding(self, blocknum,blocksize,totalsize):
         pass
+
     def dowonlod(self):
         url_text = self.lineEdit.text()
         open_save = self.lineEdit_2.text()
-        f = [open_save]
-        ydl_opts = {
-            'verbose': True,  # like this
-            'format': '{}'.format(int(comboget)),  # format,vebrose,ottmpl
-            'outtmpl': f[0],  # how can i find
-            'noplaylist': mt,  # all dictionary
-            'logger': MyLogger(),  # options
-            'progress_hooks': [durum],  # how can i find
-        }
+        #f = [open_save]
+        #ydl_opts = {
+        #   'verbose': True,  # like this
+        #  'outtmpl':'E:\programation\hemidi.mp4',  # how can i find
+        #   'progress_hooks': [100],  # how can i find
+        #}
         #ydl_opts = {'outtmpl': str(f[0])}
 
         #ydl_opts = {'file_name.mp4'}
         #ydl_opts = {'outtmpl': 'file_name.mp4'}
-        with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([str(url_text)])
+        #with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        #    ydl.download([str(url_text)])
+        try:
+            urllib.urlretrieve(str(url_text),str(open_save),self.loding)
+        except Exception :
+            print 'ERORR'
+            return
+
 
         self.progressBar.setValue(0)
         self.lineEdit.setText('')
         self.lineEdit_2.setText('')
         #print'ok'
-        self.QMessageBox.question(self,'dnvkjfvn','dknvkljdv')
+        #QMessageBox.information(self,'dnvkjfvn','dvufdu')
+        print 'yas'
 
 
 if __name__ == "__main__":
